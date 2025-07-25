@@ -1,0 +1,6 @@
+@jupter_server_HostAddress = http://localhost:5173
+
+GET {{jupter_server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
