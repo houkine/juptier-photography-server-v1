@@ -1,4 +1,6 @@
+using jupter_server.Helpers;
 using jupter_server.Models;
+using jupter_server.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -10,10 +12,20 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
-});
+builder.Services.AddDbContext<DataContext>();
+
+
+builder.Services.AddAutoMapper(cfg => { });
+
+// configure strongly typed settings object
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+// configure DI for application services
+builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

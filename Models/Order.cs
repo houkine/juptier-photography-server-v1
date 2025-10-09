@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
+using jupter_server.Models.UserModel;
 
 namespace jupter_server.Models
 {

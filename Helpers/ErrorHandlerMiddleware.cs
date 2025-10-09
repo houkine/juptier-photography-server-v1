@@ -1,4 +1,4 @@
-namespace WebApi.Helpers;
+namespace jupter_server.Helpers;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

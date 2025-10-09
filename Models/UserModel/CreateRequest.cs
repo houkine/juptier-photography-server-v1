@@ -1,8 +1,8 @@
-namespace jupter_server.Models.Users;
+namespace jupter_server.Models.UserModel;
 
 using System.ComponentModel.DataAnnotations;
 
-public class CreateRequest:CreaseRequestBase
+public class CreateRequest:BaseCreateRequest
 {
     [Required]
     public string email { get; set; }
@@ -15,7 +15,7 @@ public class CreateRequest:CreaseRequestBase
 
     public DateTime? dateOfBirth { get; set; }
 
-    public string address { get; set; }
+    public string? address { get; set; }
 
     
 }

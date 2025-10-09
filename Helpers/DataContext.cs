@@ -1,7 +1,7 @@
-namespace WebApi.Helpers;
+namespace jupter_server.Helpers;
 
 using Microsoft.EntityFrameworkCore;
-using WebApi.Entities;
+using jupter_server.Models.UserModel;
 
 public class DataContext : DbContext
 {
@@ -14,9 +14,21 @@ public class DataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        // in memory database used for simplicity, change to a real db for production applications
-        options.UseInMemoryDatabase("TestDb");
+           options.UseNpgsql(Configuration.GetConnectionString("jupterServerDatabase"));
     }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> User { get; set; }
+    //public DbSet<Order> Order { get; set; }
+    //public DbSet<Item> Item { get; set; }
+    //public DbSet<UserAlbum> UserAlbum { get; set; }
+    //public DbSet<Photo> Photo { get; set; }
+    //public DbSet<Gallery> Gallery { get; set; }
+    //public DbSet<GalleryAlbum> GalleryAlbum { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //modelBuilder.Entity<Post>()
+        //    .HasMany(e => e.Tags)
+        //    .WithMany();
+    }
 }

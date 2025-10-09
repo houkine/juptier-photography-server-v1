@@ -1,86 +1,189 @@
 ﻿namespace jupter_server.Services;
-using jupter_server.Models;
-using jupter_server.Models.Users;
-using WebApi.Helpers;
 
-    public interface IUserService
-    {
-        IEnumerable<User> GetAll();
-        User GetById(int id);
-        void Create(CreateRequest model);
-        void Update(int id, UpdateRequest model);
-        void Delete(int id);
-    }
-    public class UserService
-    {
-    private DataContext _context;
+using AutoMapper;
+using BCrypt.Net;
+using jupter_server.Helpers;
+using jupter_server.Models.UserModel;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
+using System.Security.Claims;
+using System.Security.Cryptography.Xml;
+using System.Text;
+
+public interface IUserService
+{
+    IEnumerable<User> GetAll();
+    User GetById(Guid id);
+    User[] Find(string email, string name, string address, string DOBstart, string DOBend, int skip, int take);
+    int Count(string email, string name, string address, string DOBstart, string DOBend);
+    void Create(CreateRequest model);
+    AuthenticateResponse Signin(AuthenticateRequest model);
+    void Update(UpdateRequest model);
+    void Delete(Guid id);
+}
+public class UserService: IUserService
+{
+    private readonly DataContext _context;
+    private readonly IMapper _mapper;
+    private readonly AppSettings _appSettings;
+
 
     public UserService(
-        DataContext context
-     )
+        DataContext context,
+        IOptions<AppSettings> appSettings,
+        IMapper mapper
+    )
     {
         _context = context;
+        _mapper = mapper;
+        _appSettings = appSettings.Value;
+
     }
 
     public IEnumerable<User> GetAll()
     {
-        return _context.Users;
+        return _context.User;
     }
 
-    public User GetById(int id)
+    public User GetById(Guid id)
     {
-        return getUser(id);
+        var user = _context.User.Find(id);
+        if (user == null) throw new KeyNotFoundException("User not found");
+        return user;
+    }
+
+    public User[] Find(string email,string name,string address, string DOBstart, string DOBend, int skip, int take)
+    {
+        var users = _context.User
+        .Where(FindUserExpression(email, name, address, DOBstart, DOBend))
+        .Skip(skip)
+        .Take(take)
+        .ToArray();
+        return users;
+    }
+
+    public int Count(string email, string name, string address, string DOBstart, string DOBend)
+    {
+        int resultCount = _context.User
+        .Where(FindUserExpression(email, name, address, DOBstart, DOBend))
+        .Count();
+        return resultCount;
     }
 
     public void Create(CreateRequest model)
     {
         // validate
-        if (_context.Users.Any(x => x.Email == model.Email))
-            throw new AppException("User with the email '" + model.Email + "' already exists");
+        if (_context.User.Any(x => x.email == model.email))
+            throw new AppException("User with the email '" + model.email + "' already exists");
 
         // map model to new user object
-        var user = _mapper.Map<User>(model);
+        //var user = _mapper.Map<User>(model);
+        User user = new User();
+        user.email=model.email;
+        user.name = model.name;
+        user.dateOfBirth = model.dateOfBirth;
+        user.address = model.address;
 
         // hash password
-        user.PasswordHash = BCrypt.HashPassword(model.Password);
+        user.password = BCrypt.HashPassword(model.password);
 
         // save user
-        _context.Users.Add(user);
+        _context.User.Add(user);
         _context.SaveChanges();
     }
-
-    public void Update(int id, UpdateRequest model)
+    public AuthenticateResponse Signin(AuthenticateRequest model)
     {
-        var user = getUser(id);
+        // validate
+        var user = _context.User.SingleOrDefault(u=>u.email ==model.email);
+        if (user==null)
+            throw new AppException("User with the email '" + model.email + "' does not exists");
+        Console.WriteLine(user.password);
+        // compare the password
+        string EncryptedPassword = BCrypt.HashPassword(model.password);
+        Console.WriteLine(BCrypt.Verify(model.password, user.password));
+        if (BCrypt.Verify(model.password, user.password))
+        {
+            //success
+            var token = generateJwtToken(user);
+            return new AuthenticateResponse(user, token);
+        }
+        else
+        {
+            //fail
+            throw new AppException("User Password incorrect with the email '" + model.email + "' ");
+
+        }
+
+    }
+
+    public void Update(UpdateRequest model)
+    {
+        var user = GetById(model.id);
 
         // validate
-        if (model.Email != user.Email && _context.Users.Any(x => x.Email == model.Email))
-            throw new AppException("User with the email '" + model.Email + "' already exists");
+        if (model.email != user.email && _context.User.Any(x => x.email == model.email))
+            throw new AppException("User with the email '" + model.email + "' already exists");
 
         // hash password if it was entered
-        if (!string.IsNullOrEmpty(model.Password))
-            user.PasswordHash = BCrypt.HashPassword(model.Password);
+        if (!string.IsNullOrEmpty(model.password))
+            user.password = BCrypt.HashPassword(model.password);
 
         // copy model to user and save
-        _mapper.Map(model, user);
-        _context.Users.Update(user);
+        //_mapper.Map(model, user);
+        //User user = new User();
+        user.email = model.email;
+        user.name = model.name;
+        user.dateOfBirth = model.dateOfBirth;
+        user.address = model.address;
+        user.isValid = model.isValid;
+
+        _context.User.Update(user);
         _context.SaveChanges();
     }
 
-    public void Delete(int id)
+    public void Delete(Guid id)
     {
-        var user = getUser(id);
-        _context.Users.Remove(user);
+        var user = GetById(id);
+        _context.User.Remove(user);
         _context.SaveChanges();
     }
 
-    // helper methods
+    //// helper methods
 
-    private User getUser(int id)
+    private Expression<Func<User,bool>> FindUserExpression(string email, string name, string address, string DOBstart, string DOBend)
     {
-        var user = _context.Users.Find(id);
-        if (user == null) throw new KeyNotFoundException("User not found");
-        return user;
+        DateTime DOBstartDT;
+        DateTime DOBendDT;
+        DateTime.TryParse(DOBstart, out DOBstartDT);
+        DateTime.TryParse(DOBend, out DOBendDT);
+        return (u =>
+             u.email.Contains(email) &&
+             u.name.Contains(name) &&
+             u.address.Contains(address) &&
+             u.dateOfBirth >= DOBstartDT &&
+             u.dateOfBirth <= DOBendDT
+         );
+    }
+
+    private string generateJwtToken(User user)
+    {
+        // generate token that is valid for 7 days
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("id", user.id.ToString()) }),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
 

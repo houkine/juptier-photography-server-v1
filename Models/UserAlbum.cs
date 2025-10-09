@@ -1,4 +1,3 @@
-
 namespace jupter_server.Models
 {
     public class UserAlbum : BaseModel
