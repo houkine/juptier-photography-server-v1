@@ -1,7 +1,7 @@
 namespace jupter_server.Helpers;
 
 using Microsoft.EntityFrameworkCore;
-using jupter_server.Models.UserModel;
+using jupter_server.Entities;
 
 public class DataContext : DbContext
 {

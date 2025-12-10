@@ -1,7 +1,7 @@
 namespace jupter_server.Helpers;
 
 using AutoMapper;
-using jupter_server.Models;
+using jupter_server.Entities;
 using jupter_server.Models.UserModel;
 
 public class AutoMapperProfile : Profile

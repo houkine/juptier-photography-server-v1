@@ -4,6 +4,7 @@ using AutoMapper;
 using BCrypt.Net;
 using jupter_server.Helpers;
 using jupter_server.Models.UserModel;
+using jupter_server.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -54,7 +55,7 @@ public class UserService: IUserService
     public User GetById(Guid id)
     {
         var user = _context.User.Find(id);
-        if (user == null) throw new KeyNotFoundException("User not found");
+        //if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
 

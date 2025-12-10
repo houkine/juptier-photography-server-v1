@@ -1,6 +1,6 @@
 namespace jupter_server.Helpers;
 
-using jupter_server.Models.UserModel;
+using jupter_server.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using jupter_server.Models.UserModel;
 
-namespace jupter_server.Models
+namespace jupter_server.Entities
 {
     public class Order: BaseModel
     {
@@ -15,10 +15,10 @@ namespace jupter_server.Models
         public string? postscript { get; set; }
         public string? status { get; set; }
 
-        public required Guid ItemId { get; set; } 
-        public required Item Item { get; set; }
+        public Guid? ItemId { get; set; } 
+        public Item? Item { get; set; }
 
-        public required Guid UserId { get; set; }
-        public required User User { get; set; }
+        public Guid? UserId { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-namespace jupter_server.Models
+namespace jupter_server.Entities
 {
     public class UserAlbum : BaseModel
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
 
-namespace jupter_server.Models
+namespace jupter_server.Entities
 {
     [Index(nameof(sequence))]
     public class Photo : BaseModel

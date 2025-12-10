@@ -5,19 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
 
-namespace jupter_server.Models
+namespace jupter_server.Entities
 {
-    [Index(nameof(sequence))]
     public class Gallery : BaseModel
     {
 
         public string name { get; set; }
 
-        public string? introduce { get; set; }
+        public string? backgroundImage { get; set; }
 
-        public int sequence { get; set; }
-
-
-        public ICollection<GalleryAlbum> GalleryAlbums { get; } =  new List<GalleryAlbum>();
+        public ICollection<GalleryThemeInfo> ThemeInfos { get; } =  new List<GalleryThemeInfo>();
     }
 }
