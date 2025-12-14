@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using jupter_server.Helpers;
@@ -11,9 +12,11 @@ using jupter_server.Helpers;
 namespace jupter_server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251214020818_dev02.3")]
+    partial class dev023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,48 +179,6 @@ namespace jupter_server.Migrations
                     b.HasIndex("sequence");
 
                     b.ToTable("GalleryThemeInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            id = new Guid("ba11a7ef-ddcb-4545-a40a-fc3262801f96"),
-                            GalleryId = new Guid("630e5ef0-cf44-4b82-b4e1-9838cee24e4d"),
-                            coverImage = "",
-                            description = "this is nature theme",
-                            isValid = true,
-                            sequence = 1,
-                            title = "NATURE"
-                        },
-                        new
-                        {
-                            id = new Guid("56bbe3de-8d3f-4630-b0c1-21a49c64c97b"),
-                            GalleryId = new Guid("630e5ef0-cf44-4b82-b4e1-9838cee24e4d"),
-                            coverImage = "",
-                            description = "this is character theme",
-                            isValid = true,
-                            sequence = 2,
-                            title = "CHARACTER"
-                        },
-                        new
-                        {
-                            id = new Guid("1b56daf8-2992-479f-acec-c34838c91898"),
-                            GalleryId = new Guid("630e5ef0-cf44-4b82-b4e1-9838cee24e4d"),
-                            coverImage = "",
-                            description = "this is event theme",
-                            isValid = true,
-                            sequence = 3,
-                            title = "EVENT"
-                        },
-                        new
-                        {
-                            id = new Guid("9f45fc55-2d8f-4008-a4ec-f6526ef280e1"),
-                            GalleryId = new Guid("630e5ef0-cf44-4b82-b4e1-9838cee24e4d"),
-                            coverImage = "",
-                            description = "this is business theme",
-                            isValid = true,
-                            sequence = 4,
-                            title = "BUSINESS"
-                        });
                 });
 
             modelBuilder.Entity("jupter_server.Entities.Item", b =>

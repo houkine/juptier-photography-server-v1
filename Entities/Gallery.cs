@@ -1,3 +1,5 @@
+//this is album, the page protity. will have 5 templates, also considered as sections, coded as GalleryThemeInfo entity.
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -10,7 +12,7 @@ namespace jupter_server.Entities
     public class Gallery : BaseModel
     {
 
-        public string name { get; set; }
+        public string? name { get; set; }
 
         public string? backgroundImage { get; set; }
 

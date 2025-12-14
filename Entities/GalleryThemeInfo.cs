@@ -1,3 +1,5 @@
+// theme
+
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +11,8 @@ namespace jupter_server.Entities
     {
         public string? title { get; set; }
         public string? description { get; set; }
+
+        // not been used so far
         public string? coverImage { get; set; }
         public int sequence { get; set; }
 

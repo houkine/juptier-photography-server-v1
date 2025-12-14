@@ -1,3 +1,6 @@
+// each album will have 3 lists of photos, which means will have 3 records of this entity
+// and, this record will link with many AlbumImageInfo(photos) to be displayed as photos under this row.
+
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

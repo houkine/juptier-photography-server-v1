@@ -12,6 +12,5 @@ namespace jupter_server.Entities
 
         public Guid? AlbumImageListInfoId { get; set; }
         public AlbumImageListInfo? AlbumImageListInfo { get; set; }
-        public ICollection<AlbumImageListInfo> AlbumImageListInfos { get; } = new List<AlbumImageListInfo>();
     }
 }
