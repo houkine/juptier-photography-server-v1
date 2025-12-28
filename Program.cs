@@ -17,11 +17,22 @@ builder.Services.AddDbContext<DataContext>();
 
 builder.Services.AddAutoMapper(cfg => { });
 
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+
+
 // configure strongly typed settings object
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // configure DI for application services
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IGalleryService, GalleryService>();
+builder.Services.AddScoped<IGalleryThemeInfoService, GalleryThemeInfoService>();
+builder.Services.AddScoped<IThemeAlbumInfoService, ThemeAlbumInfoService>();
+builder.Services.AddScoped<IAlbumImageInfoService, AlbumImageInfoService>();
 
 var app = builder.Build();
 

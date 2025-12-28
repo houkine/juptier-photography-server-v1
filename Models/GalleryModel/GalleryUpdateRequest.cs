@@ -1,8 +1,8 @@
-namespace jupter_server.Models.GalleryModel;
+namespace jupter_server.Models;
 
 using System.ComponentModel.DataAnnotations;
 
-public class UpdateRequest : BaseUpdateRequest
+public class GalleryUpdateRequest : BaseUpdateRequest
 {
     public string? name { get; set; }
     public string? backgroundImage { get; set; }

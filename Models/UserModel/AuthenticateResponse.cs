@@ -1,6 +1,7 @@
-namespace jupter_server.Entities;
+namespace jupter_server.Models;
 
 using System.ComponentModel.DataAnnotations;
+using jupter_server.Entities;
 
 public class AuthenticateResponse 
 {

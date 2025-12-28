@@ -2,19 +2,16 @@
 
 using AutoMapper;
 using BCrypt.Net;
-using jupter_server.Helpers;
-using jupter_server.Models.UserModel;
 using jupter_server.Entities;
-using Microsoft.EntityFrameworkCore;
+using jupter_server.Helpers;
+using jupter_server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Security.Claims;
-using System.Security.Cryptography.Xml;
 using System.Text;
 
 public interface IUserService
@@ -23,9 +20,9 @@ public interface IUserService
     User GetById(Guid id);
     User[] Find(string email, string name, string address, string DOBstart, string DOBend, int skip, int take);
     int Count(string email, string name, string address, string DOBstart, string DOBend);
-    void Create(CreateRequest model);
+    void Create(UserCreateRequest model);
     AuthenticateResponse Signin(AuthenticateRequest model);
-    void Update(UpdateRequest model);
+    void Update(UserUpdateRequest model);
     void Delete(Guid id);
 }
 public class UserService: IUserService
@@ -77,7 +74,7 @@ public class UserService: IUserService
         return resultCount;
     }
 
-    public void Create(CreateRequest model)
+    public void Create(UserCreateRequest model)
     {
         // validate
         if (_context.User.Any(x => x.email == model.email))
@@ -123,7 +120,7 @@ public class UserService: IUserService
 
     }
 
-    public void Update(UpdateRequest model)
+    public void Update(UserUpdateRequest model)
     {
         var user = GetById(model.id);
 

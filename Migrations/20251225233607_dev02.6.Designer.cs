@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using jupter_server.Helpers;
@@ -11,9 +12,11 @@ using jupter_server.Helpers;
 namespace jupter_server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251225233607_dev02.6")]
+    partial class dev026
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace jupter_server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AlbumImageListInfoId")
+                    b.Property<Guid?>("AlbumImageListInfoId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("created")
@@ -66,7 +69,7 @@ namespace jupter_server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ThemeAlbumInfoId")
+                    b.Property<Guid?>("ThemeAlbumInfoId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("created")
@@ -467,9 +470,7 @@ namespace jupter_server.Migrations
                 {
                     b.HasOne("jupter_server.Entities.AlbumImageListInfo", "AlbumImageListInfo")
                         .WithMany("AlbumImageInfos")
-                        .HasForeignKey("AlbumImageListInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AlbumImageListInfoId");
 
                     b.Navigation("AlbumImageListInfo");
                 });
@@ -478,9 +479,7 @@ namespace jupter_server.Migrations
                 {
                     b.HasOne("jupter_server.Entities.ThemeAlbumInfo", "ThemeAlbumInfo")
                         .WithMany("AlbumImageListInfos")
-                        .HasForeignKey("ThemeAlbumInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ThemeAlbumInfoId");
 
                     b.Navigation("ThemeAlbumInfo");
                 });

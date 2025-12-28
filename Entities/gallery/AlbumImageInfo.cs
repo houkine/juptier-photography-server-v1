@@ -10,7 +10,7 @@ namespace jupter_server.Entities
         public string? src { get; set; }
         public int sequence { get; set; }
 
-        public Guid? AlbumImageListInfoId { get; set; }
-        public AlbumImageListInfo? AlbumImageListInfo { get; set; }
+        public Guid AlbumImageListInfoId { get; set; }
+        public AlbumImageListInfo AlbumImageListInfo { get; set; }
     }
 }

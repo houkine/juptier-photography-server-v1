@@ -2,14 +2,14 @@ namespace jupter_server.Helpers;
 
 using AutoMapper;
 using jupter_server.Entities;
-using jupter_server.Models.UserModel;
+using jupter_server.Models;
 
 public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
         // CreateRequest -> User
-        CreateMap<CreateRequest, User>();
+        CreateMap<UserCreateRequest, User>();
 
         // UpdateRequest -> User
         //CreateMap<UpdateRequest, User>()
@@ -26,7 +26,7 @@ public class AutoMapperProfile : Profile
         //            return true;
         //        }
         //    ));
-        CreateMap<UpdateRequest, User>();
+        CreateMap<UserUpdateRequest, User>();
     }
 
 }

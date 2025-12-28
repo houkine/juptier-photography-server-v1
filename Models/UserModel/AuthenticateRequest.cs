@@ -1,4 +1,4 @@
-namespace jupter_server.Models.UserModel;
+namespace jupter_server.Models;
 
 using System.ComponentModel.DataAnnotations;
 

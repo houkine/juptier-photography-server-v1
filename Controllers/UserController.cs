@@ -1,9 +1,5 @@
 using jupter_server.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using jupter_server.Models.UserModel;
 using jupter_server.Services;
 
 namespace jupter_server.Controllers
@@ -59,7 +55,7 @@ namespace jupter_server.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateRequest model)
+        public IActionResult Create([FromBody] UserCreateRequest model)
         {
             _userService.Create(model);
             return Ok(new { message = "User created" });
@@ -74,7 +70,7 @@ namespace jupter_server.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(UpdateRequest model)
+        public IActionResult Update(UserUpdateRequest model)
         {
             _userService.Update(model);
             return Ok(new { message = "User updated" });

@@ -1,8 +1,8 @@
-namespace jupter_server.Models.UserModel;
+namespace jupter_server.Models;
 
 using System.ComponentModel.DataAnnotations;
 
-public class CreateRequest:BaseCreateRequest
+public class UserCreateRequest:BaseCreateRequest
 {
     [Required]
     public string email { get; set; }

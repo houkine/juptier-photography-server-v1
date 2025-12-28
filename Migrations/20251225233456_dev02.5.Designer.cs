@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using jupter_server.Helpers;
@@ -11,9 +12,11 @@ using jupter_server.Helpers;
 namespace jupter_server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251225233456_dev02.5")]
+    partial class dev025
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace jupter_server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AlbumImageListInfoId")
+                    b.Property<Guid?>("AlbumImageListInfoId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("created")
@@ -66,7 +69,7 @@ namespace jupter_server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ThemeAlbumInfoId")
+                    b.Property<Guid?>("ThemeAlbumInfoId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("created")
@@ -362,56 +365,6 @@ namespace jupter_server.Migrations
                     b.HasIndex("sequence");
 
                     b.ToTable("ThemeAlbumInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            id = new Guid("061e7679-87da-4e4d-b516-dbb2443671a2"),
-                            GalleryThemeInfoId = new Guid("ba11a7ef-ddcb-4545-a40a-fc3262801f96"),
-                            isValid = true,
-                            sequence = 1,
-                            title = "Album_1"
-                        },
-                        new
-                        {
-                            id = new Guid("a0331524-0418-439f-baf2-e783c26dcb04"),
-                            GalleryThemeInfoId = new Guid("ba11a7ef-ddcb-4545-a40a-fc3262801f96"),
-                            isValid = true,
-                            sequence = 2,
-                            title = "Album_2"
-                        },
-                        new
-                        {
-                            id = new Guid("5af125aa-0eeb-4c01-95e9-e89d9268771e"),
-                            GalleryThemeInfoId = new Guid("56bbe3de-8d3f-4630-b0c1-21a49c64c97b"),
-                            isValid = true,
-                            sequence = 3,
-                            title = "Album_3"
-                        },
-                        new
-                        {
-                            id = new Guid("77a70ce5-e14f-4039-9df1-27c5ff0b605f"),
-                            GalleryThemeInfoId = new Guid("1b56daf8-2992-479f-acec-c34838c91898"),
-                            isValid = true,
-                            sequence = 4,
-                            title = "Album_4"
-                        },
-                        new
-                        {
-                            id = new Guid("adfa6ea8-2b61-487c-bf4c-a98eaa0b7f13"),
-                            GalleryThemeInfoId = new Guid("9f45fc55-2d8f-4008-a4ec-f6526ef280e1"),
-                            isValid = true,
-                            sequence = 5,
-                            title = "Album_5"
-                        },
-                        new
-                        {
-                            id = new Guid("41aec750-9233-4cb8-ace2-88f92a11a28c"),
-                            GalleryThemeInfoId = new Guid("9f45fc55-2d8f-4008-a4ec-f6526ef280e1"),
-                            isValid = true,
-                            sequence = 6,
-                            title = "Album_6"
-                        });
                 });
 
             modelBuilder.Entity("jupter_server.Entities.User", b =>
@@ -467,9 +420,7 @@ namespace jupter_server.Migrations
                 {
                     b.HasOne("jupter_server.Entities.AlbumImageListInfo", "AlbumImageListInfo")
                         .WithMany("AlbumImageInfos")
-                        .HasForeignKey("AlbumImageListInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AlbumImageListInfoId");
 
                     b.Navigation("AlbumImageListInfo");
                 });
@@ -478,9 +429,7 @@ namespace jupter_server.Migrations
                 {
                     b.HasOne("jupter_server.Entities.ThemeAlbumInfo", "ThemeAlbumInfo")
                         .WithMany("AlbumImageListInfos")
-                        .HasForeignKey("ThemeAlbumInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ThemeAlbumInfoId");
 
                     b.Navigation("ThemeAlbumInfo");
                 });
